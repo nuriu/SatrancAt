@@ -231,7 +231,7 @@ namespace SatrancAt
                         {
                             foreach (var kod in secilebilirKodlar)
                             {
-                                if (((Label)item).Text == kod.ToString())
+                                if (((Label)item).Text == kod.ToString() && !(secilmisYerler.Contains(((Label)item))))
                                 {
                                     lblSecilebilir.Text += ((Label)item).Text + "\n";
 
@@ -276,7 +276,7 @@ namespace SatrancAt
                     }
                     if (secilebilirYerler.Count < 1)
                     {
-                        MessageBox.Show("Oyunu Kaybettiniz!", "Geçmiş Olsun!", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        MessageBox.Show("Seçilebilir Yer Kalmadı, Dolayısıyla Oyunu Kaybettiniz!", "Geçmiş Olsun!", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
                     #endregion
 
