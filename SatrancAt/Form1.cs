@@ -153,6 +153,11 @@ namespace SatrancAt
         /// <param name="e">Olay argümanları.</param>
         private void HamleleriGoster(object sender, EventArgs e)
         {
+            if (skor < 1)
+            {
+                lblSecilmisler.Text = "Seçilmiş Yerler: \n";
+            }
+
             // Skoru arttırıyoruz.
             skor++;
             lblSkor.Text = "Skor: " + skor.ToString();
@@ -175,7 +180,7 @@ namespace SatrancAt
                 {
                     // Önceki seçimi yok ediyoruz.
                     Controls.Remove(oncekiSecim);
-                    
+
                     // Seçilebilir yerleri sıfırlıyoruz.
                     secilebilirYerler = new List<Label>();
 
@@ -215,6 +220,7 @@ namespace SatrancAt
                     #endregion
 
                     secilmisYerler.Add((Label)sender);
+                    lblSecilmisler.Text += ((Label)sender).Text + "\n";
 
                     // Her ihtimale karşı tıklama olayını kaldırıyoruz.
                     ((Label)sender).Click -= HamleleriGoster;
@@ -314,13 +320,6 @@ namespace SatrancAt
                     ((Label)item).ForeColor = Color.Black;
                 }
             }
-        }
-
-        /// <summary>
-        /// Seçilebilir pozisyonları renklendirir.
-        /// </summary>
-        private void SecilebilirYerleriRenklendir()
-        {
         }
     }
 }

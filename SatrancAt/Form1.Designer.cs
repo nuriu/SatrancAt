@@ -38,6 +38,7 @@
             this.lblSecim = new System.Windows.Forms.Label();
             this.lblSecilebilir = new System.Windows.Forms.Label();
             this.lblSkor = new System.Windows.Forms.Label();
+            this.lblSecilmisler = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -141,9 +142,9 @@
             this.lblSecilebilir.ForeColor = System.Drawing.Color.White;
             this.lblSecilebilir.Location = new System.Drawing.Point(574, 118);
             this.lblSecilebilir.Name = "lblSecilebilir";
-            this.lblSecilebilir.Size = new System.Drawing.Size(104, 20);
+            this.lblSecilebilir.Size = new System.Drawing.Size(121, 20);
             this.lblSecilebilir.TabIndex = 2;
-            this.lblSecilebilir.Text = "Seçilebilir Yer";
+            this.lblSecilebilir.Text = "Seçilebilir Yerler";
             // 
             // lblSkor
             // 
@@ -155,12 +156,25 @@
             this.lblSkor.TabIndex = 3;
             this.lblSkor.Text = "Skor";
             // 
+            // lblSecilmisler
+            // 
+            this.lblSecilmisler.AutoSize = true;
+            this.lblSecilmisler.BackColor = System.Drawing.Color.Black;
+            this.lblSecilmisler.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.lblSecilmisler.ForeColor = System.Drawing.Color.White;
+            this.lblSecilmisler.Location = new System.Drawing.Point(574, 304);
+            this.lblSecilmisler.Name = "lblSecilmisler";
+            this.lblSecilmisler.Size = new System.Drawing.Size(113, 20);
+            this.lblSecilmisler.TabIndex = 2;
+            this.lblSecilmisler.Text = "Seçilmiş Yerler";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(784, 562);
+            this.ClientSize = new System.Drawing.Size(784, 707);
             this.Controls.Add(this.lblSkor);
+            this.Controls.Add(this.lblSecilmisler);
             this.Controls.Add(this.lblSecilebilir);
             this.Controls.Add(this.lblSecim);
             this.Controls.Add(this.groupBox1);
@@ -187,6 +201,7 @@
         private System.Windows.Forms.Label lblSecim;
         private System.Windows.Forms.Label lblSecilebilir;
         private System.Windows.Forms.Label lblSkor;
+        private System.Windows.Forms.Label lblSecilmisler;
     }
 }
 
