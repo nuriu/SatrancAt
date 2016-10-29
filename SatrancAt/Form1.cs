@@ -13,6 +13,11 @@ namespace SatrancAt
         private int skor = 0;
 
         /// <summary>
+        /// Bir satırdaki hücre sayısı.
+        /// </summary>
+        private int hucreSayisi = 0;
+
+        /// <summary>
         /// Bir önceki seçim.
         /// </summary>
         private Label oncekiSecim = null;
@@ -59,28 +64,28 @@ namespace SatrancAt
         /// <param name="e"></param>
         private void button1_Click(object sender, EventArgs e)
         {
-            int gridKenar = -1;
+            hucreSayisi = -1;
 
             #region Grid Boyut Seçimi
             if (radioButton1.Checked)
             {
-                gridKenar = 5;
+                hucreSayisi = 5;
             }
             else if (radioButton2.Checked)
             {
-                gridKenar = 6;
+                hucreSayisi = 6;
             }
             else if (radioButton3.Checked)
             {
-                gridKenar = 7;
+                hucreSayisi = 7;
             }
             else if (radioButton4.Checked)
             {
-                gridKenar = 8;
+                hucreSayisi = 8;
             }
             else if (radioButton5.Checked)
             {
-                gridKenar = 9;
+                hucreSayisi = 9;
             }
             else
             {
@@ -88,13 +93,10 @@ namespace SatrancAt
             }
             #endregion
 
-            if (gridKenar != -1)
+            if (hucreSayisi != -1)
             {
-                //MessageBox.Show(gridKenar + " x " + gridKenar + " boyutunda grid oluşturuluyor.",
-                //                    "Bilgi", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
                 button1.Enabled = false;
-                GridOlustur(gridKenar);
+                GridOlustur(hucreSayisi);
             }
         }
 
@@ -166,6 +168,10 @@ namespace SatrancAt
             }
             else
             {
+
+                // Görünümü sıfırla.
+                RenkleriSifirla((Label)sender);
+
                 #region Renk İşlemleri
                 if (oncekiSecim != null)
                 {
@@ -185,6 +191,7 @@ namespace SatrancAt
 
                 int secilenKod = Convert.ToInt16(((Label)sender).Text);
 
+                #region Seçilebilir Kodlar
                 // Seçilebilir kodları seçilen koda göre belirle.
                 int[] secilebilirKodlar = new int[8];
                 secilebilirKodlar[0] = secilenKod - 21;
@@ -195,10 +202,11 @@ namespace SatrancAt
                 secilebilirKodlar[5] = secilenKod - 8;
                 secilebilirKodlar[6] = secilenKod + 8;
                 secilebilirKodlar[7] = secilenKod + 12;
+                #endregion
 
                 secilmisYerler.Add((Label)sender);
                 secilebilirYerler.Remove((Label)sender);
-                
+
                 lblSecilebilir.Text = "Seçilebilir Yerler: \n";
 
                 foreach (var item in Controls)
@@ -223,5 +231,32 @@ namespace SatrancAt
             }
         }
 
+        /// <summary>
+        /// Pozisyon haricindeki her hücrenin renklerini sıfırla.
+        /// </summary>
+        /// <param name="pozisyon">Anlık pozisyonumuz.</param>
+        private void RenkleriSifirla(Label pozisyon)
+        {
+            foreach (var item in Controls)
+            {
+                if (item is Label && ((Label)item).Text.Length < 3 && ((Label)item) != pozisyon)
+                {
+                    int kod = Convert.ToInt32(((Label)item).Text);
+                    int i = kod / 10;
+                    int j = kod % 10;
+
+                    if ((i + j) % 2 == 0)
+                    {
+                        ((Label)item).BackColor = Color.Beige;
+                    }
+                    else
+                    {
+                        ((Label)item).BackColor = Color.Wheat;
+                    }
+
+                    ((Label)item).ForeColor = Color.Black;
+                }
+            }
+        }
     }
 }
