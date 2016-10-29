@@ -160,11 +160,8 @@ namespace SatrancAt
             // oyunu kazanma mesajı.
             if (skor >= hucreSayisi * hucreSayisi)
             {
-                MessageBox.Show("Oyunu Kazandınız!");
+                MessageBox.Show("Oyunu Kazandınız!", "Tebrikler!", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
-
-            // Seçilebilir yerleri sıfırlıyoruz.
-            secilebilirYerler = new List<Label>();
 
             // TODO: Seçilebilir mi kontrol et. Skor 1 üzerindeyse. (En az 1 seçim yaptıysa).
 
@@ -174,87 +171,119 @@ namespace SatrancAt
             }
             else
             {
-
-                // Görünümü sıfırla.
-                RenkleriSifirla((Label)sender);
-
-                #region Renk İşlemleri
-                if (oncekiSecim != null)
+                if (skor >= 1 && secilebilirYerler.Contains(((Label)sender)))
                 {
-                    oncekiSecim.BackColor = oncekiSecimArkaplanRengi;
-                    oncekiSecim.ForeColor = oncekiSecimMetinRengi;
-                }
+                    // Önceki seçimi yok ediyoruz.
+                    Controls.Remove(oncekiSecim);
+                    
+                    // Seçilebilir yerleri sıfırlıyoruz.
+                    secilebilirYerler = new List<Label>();
 
-                oncekiSecim = ((Label)sender);
-                oncekiSecimArkaplanRengi = ((Label)sender).BackColor;
-                oncekiSecimMetinRengi = ((Label)sender).ForeColor;
+                    // Görünümü sıfırla.
+                    RenkleriSifirla((Label)sender);
 
-                ((Label)sender).BackColor = Color.DarkBlue;
-                ((Label)sender).ForeColor = Color.White;
-                #endregion
-
-                lblSecim.Text = "Aktif Seçim: " + ((Label)sender).Text;
-
-                int secilenKod = Convert.ToInt16(((Label)sender).Text);
-
-                #region Seçilebilir Kodlar
-                // Seçilebilir kodları seçilen koda göre belirle.
-                int[] secilebilirKodlar = new int[8];
-                secilebilirKodlar[0] = secilenKod + 19;
-                secilebilirKodlar[1] = secilenKod - 19;
-                secilebilirKodlar[2] = secilenKod + 21;
-                secilebilirKodlar[3] = secilenKod - 21;
-                secilebilirKodlar[4] = secilenKod + 8;
-                secilebilirKodlar[5] = secilenKod - 8;
-                secilebilirKodlar[6] = secilenKod + 12;
-                secilebilirKodlar[7] = secilenKod - 12;
-                #endregion
-
-                secilmisYerler.Add((Label)sender);
-                secilebilirYerler.Remove((Label)sender);
-
-                lblSecilebilir.Text = "Seçilebilir Yerler: \n";
-
-                foreach (var item in Controls)
-                {
-                    if (item is Label)
+                    #region Renk İşlemleri
+                    if (oncekiSecim != null)
                     {
-                        foreach (var kod in secilebilirKodlar)
+                        oncekiSecim.BackColor = oncekiSecimArkaplanRengi;
+                        oncekiSecim.ForeColor = oncekiSecimMetinRengi;
+                    }
+
+                    oncekiSecim = ((Label)sender);
+                    oncekiSecimArkaplanRengi = ((Label)sender).BackColor;
+                    oncekiSecimMetinRengi = ((Label)sender).ForeColor;
+
+                    ((Label)sender).BackColor = Color.DarkBlue;
+                    ((Label)sender).ForeColor = Color.White;
+                    #endregion
+
+                    lblSecim.Text = "Aktif Seçim: " + ((Label)sender).Text;
+
+                    int secilenKod = Convert.ToInt16(((Label)sender).Text);
+
+                    #region Seçilebilir Kodlar
+                    // Seçilebilir kodları seçilen koda göre belirle.
+                    int[] secilebilirKodlar = new int[8];
+                    secilebilirKodlar[0] = secilenKod + 19;
+                    secilebilirKodlar[1] = secilenKod - 19;
+                    secilebilirKodlar[2] = secilenKod + 21;
+                    secilebilirKodlar[3] = secilenKod - 21;
+                    secilebilirKodlar[4] = secilenKod + 8;
+                    secilebilirKodlar[5] = secilenKod - 8;
+                    secilebilirKodlar[6] = secilenKod + 12;
+                    secilebilirKodlar[7] = secilenKod - 12;
+                    #endregion
+
+                    secilmisYerler.Add((Label)sender);
+
+                    // Her ihtimale karşı tıklama olayını kaldırıyoruz.
+                    ((Label)sender).Click -= HamleleriGoster;
+
+                    // Aynı pozisyon artık seçilemez.
+                    secilebilirYerler.Remove((Label)sender);
+
+                    lblSecilebilir.Text = "Seçilebilir Yerler: \n";
+
+                    #region Hamle mantığı
+                    foreach (var item in Controls)
+                    {
+                        if (item is Label)
                         {
-                            if (((Label)item).Text == kod.ToString())
+                            foreach (var kod in secilebilirKodlar)
                             {
-                                lblSecilebilir.Text += ((Label)item).Text + "\n";
-
-                                secilebilirYerler.Add((Label)item);
-
-                                // 9x9 da köşeler seçildiyse hatalı işlem yapma.
-                                if (hucreSayisi == 9)
+                                if (((Label)item).Text == kod.ToString())
                                 {
-                                    // (+8 ve -12) | (-8 ve +12)
-                                    if (((secilenKod % 10) == 1 && (
-                                        ((Label)item).Text == secilebilirKodlar[4].ToString() ||
-                                        ((Label)item).Text == secilebilirKodlar[7].ToString())) ||
-                                        ((secilenKod % 10) == 9 && (
-                                        ((Label)item).Text == secilebilirKodlar[5].ToString() ||
-                                        ((Label)item).Text == secilebilirKodlar[6].ToString()))
-                                        )
+                                    lblSecilebilir.Text += ((Label)item).Text + "\n";
+
+                                    secilebilirYerler.Add((Label)item);
+
+                                    #region 9x9
+                                    // 9x9 da köşeler seçildiyse hatalı işlem yapma.
+                                    if (hucreSayisi == 9)
                                     {
-                                        secilebilirYerler.Remove((Label)item);
+                                        // (+8 ve -12) | (-8 ve +12)
+                                        if (((secilenKod % 10) == 1 && (
+                                            ((Label)item).Text == secilebilirKodlar[4].ToString() ||
+                                            ((Label)item).Text == secilebilirKodlar[7].ToString())) ||
+                                            ((secilenKod % 10) == 9 && (
+                                            ((Label)item).Text == secilebilirKodlar[5].ToString() ||
+                                            ((Label)item).Text == secilebilirKodlar[6].ToString()))
+                                            )
+                                        {
+                                            secilebilirYerler.Remove((Label)item);
+                                        }
+                                        else
+                                        {
+                                            if (!(secilmisYerler.Contains(((Label)item))))
+                                            {
+                                                ((Label)item).BackColor = Color.Red;
+                                                ((Label)item).ForeColor = Color.White;
+                                            }
+                                        }
                                     }
+                                    #endregion
                                     else
                                     {
-                                        ((Label)item).BackColor = Color.Red;
-                                        ((Label)item).ForeColor = Color.White;
+                                        if (!(secilmisYerler.Contains(((Label)item))))
+                                        {
+                                            ((Label)item).BackColor = Color.Red;
+                                            ((Label)item).ForeColor = Color.White;
+                                        }
                                     }
-                                }
-                                else
-                                {
-                                    ((Label)item).BackColor = Color.Red;
-                                    ((Label)item).ForeColor = Color.White;
                                 }
                             }
                         }
                     }
+                    if (secilebilirYerler.Count < 1)
+                    {
+                        MessageBox.Show("Oyunu Kaybettiniz!", "Geçmiş Olsun!", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                    #endregion
+
+                }
+                else
+                {
+                    MessageBox.Show("Kırmızı ile belirtilen yerler dışında bir yer seçemezsiniz.", "Hata", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }
@@ -285,6 +314,13 @@ namespace SatrancAt
                     ((Label)item).ForeColor = Color.Black;
                 }
             }
+        }
+
+        /// <summary>
+        /// Seçilebilir pozisyonları renklendirir.
+        /// </summary>
+        private void SecilebilirYerleriRenklendir()
+        {
         }
     }
 }
