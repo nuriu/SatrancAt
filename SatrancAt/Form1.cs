@@ -157,6 +157,12 @@ namespace SatrancAt
             skor++;
             lblSkor.Text = "Skor: " + skor.ToString();
 
+            // oyunu kazanma mesajı.
+            if (skor >= hucreSayisi * hucreSayisi)
+            {
+                MessageBox.Show("Oyunu Kazandınız!");
+            }
+
             // Seçilebilir yerleri sıfırlıyoruz.
             secilebilirYerler = new List<Label>();
 
@@ -221,7 +227,7 @@ namespace SatrancAt
 
                                 secilebilirYerler.Add((Label)item);
 
-                                // TODO: KÖŞELER SEÇİLDİĞİNDE HATALI BOYUYOR DÜZELT!
+                                // TODO: 9x9'DA KÖŞELER SEÇİLDİĞİNDE HATALI BOYUYOR DÜZELT! (+12 ve -8)
                                 ((Label)item).BackColor = Color.Red;
                                 ((Label)item).ForeColor = Color.White;
                             }
