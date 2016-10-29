@@ -200,14 +200,14 @@ namespace SatrancAt
                 #region Seçilebilir Kodlar
                 // Seçilebilir kodları seçilen koda göre belirle.
                 int[] secilebilirKodlar = new int[8];
-                secilebilirKodlar[0] = secilenKod - 21;
+                secilebilirKodlar[0] = secilenKod + 19;
                 secilebilirKodlar[1] = secilenKod - 19;
-                secilebilirKodlar[2] = secilenKod + 19;
-                secilebilirKodlar[3] = secilenKod + 21;
-                secilebilirKodlar[4] = secilenKod - 12;
+                secilebilirKodlar[2] = secilenKod + 21;
+                secilebilirKodlar[3] = secilenKod - 21;
+                secilebilirKodlar[4] = secilenKod + 8;
                 secilebilirKodlar[5] = secilenKod - 8;
-                secilebilirKodlar[6] = secilenKod + 8;
-                secilebilirKodlar[7] = secilenKod + 12;
+                secilebilirKodlar[6] = secilenKod + 12;
+                secilebilirKodlar[7] = secilenKod - 12;
                 #endregion
 
                 secilmisYerler.Add((Label)sender);
@@ -227,9 +227,31 @@ namespace SatrancAt
 
                                 secilebilirYerler.Add((Label)item);
 
-                                // TODO: 9x9'DA KÖŞELER SEÇİLDİĞİNDE HATALI BOYUYOR DÜZELT! (+12 ve -8)
-                                ((Label)item).BackColor = Color.Red;
-                                ((Label)item).ForeColor = Color.White;
+                                // 9x9 da köşeler seçildiyse hatalı işlem yapma.
+                                if (hucreSayisi == 9)
+                                {
+                                    // (+8 ve -12) | (-8 ve +12)
+                                    if (((secilenKod % 10) == 1 && (
+                                        ((Label)item).Text == secilebilirKodlar[4].ToString() ||
+                                        ((Label)item).Text == secilebilirKodlar[7].ToString())) ||
+                                        ((secilenKod % 10) == 9 && (
+                                        ((Label)item).Text == secilebilirKodlar[5].ToString() ||
+                                        ((Label)item).Text == secilebilirKodlar[6].ToString()))
+                                        )
+                                    {
+                                        secilebilirYerler.Remove((Label)item);
+                                    }
+                                    else
+                                    {
+                                        ((Label)item).BackColor = Color.Red;
+                                        ((Label)item).ForeColor = Color.White;
+                                    }
+                                }
+                                else
+                                {
+                                    ((Label)item).BackColor = Color.Red;
+                                    ((Label)item).ForeColor = Color.White;
+                                }
                             }
                         }
                     }
@@ -247,7 +269,7 @@ namespace SatrancAt
             {
                 if (item is Label && ((Label)item).Text.Length < 3 && ((Label)item) != pozisyon)
                 {
-                    int kod = Convert.ToInt32(((Label)item).Text);
+                    int kod = Convert.ToInt16(((Label)item).Text);
                     int i = kod / 10;
                     int j = kod % 10;
 
