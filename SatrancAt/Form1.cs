@@ -93,9 +93,15 @@ namespace SatrancAt
             }
             #endregion
 
+            // Seçim yapıldıysa grid oluşturma alanını kapatıp, gridi oluşturuyoruz.
             if (hucreSayisi != -1)
             {
                 button1.Enabled = false;
+                radioButton1.Enabled = false;
+                radioButton2.Enabled = false;
+                radioButton3.Enabled = false;
+                radioButton4.Enabled = false;
+                radioButton5.Enabled = false;
                 GridOlustur(hucreSayisi);
             }
         }
@@ -158,8 +164,10 @@ namespace SatrancAt
                 lblSecilmisler.Text = "Seçilmiş Yerler: \n";
             }
 
-            // Skoru arttırıyoruz.
-            skor++;
+            if (secilebilirYerler.Contains(((Label)sender)))
+                // Skoru arttırıyoruz.
+                skor++;
+
             lblSkor.Text = "Skor: " + skor.ToString();
 
             // oyunu kazanma mesajı.
@@ -167,8 +175,6 @@ namespace SatrancAt
             {
                 MessageBox.Show("Oyunu Kazandınız!", "Tebrikler!", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
-
-            // TODO: Seçilebilir mi kontrol et. Skor 1 üzerindeyse. (En az 1 seçim yaptıysa).
 
             if (oncekiSecim == ((Label)sender))
             {
@@ -220,7 +226,11 @@ namespace SatrancAt
                     #endregion
 
                     secilmisYerler.Add((Label)sender);
-                    lblSecilmisler.Text += ((Label)sender).Text + "\n";
+                    lblSecilmisler.Text += ((Label)sender).Text + ", ";
+                    if (lblSecilmisler.Text.Length % 21 == 0)
+                    {
+                        lblSecilmisler.Text += "\n";
+                    }
 
                     // Her ihtimale karşı tıklama olayını kaldırıyoruz.
                     ((Label)sender).Click -= HamleleriGoster;
